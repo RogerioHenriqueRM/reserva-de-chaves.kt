@@ -33,7 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class) // Isso permite o uso de APIs experimentais do Material 3.
 @Composable
 fun SalasScreen(viewModel: ReservaChaveViewModel = viewModel()) {
     val salasDisponiveis by viewModel.salasDisponiveis.collectAsState()
