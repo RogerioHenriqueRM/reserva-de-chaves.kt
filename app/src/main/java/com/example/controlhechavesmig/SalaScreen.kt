@@ -26,6 +26,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -38,7 +41,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun SalasScreen(viewModel: ReservaChaveViewModel = viewModel()) {
     val salasDisponiveis by viewModel.salasDisponiveis.collectAsState()
     val salaSelecionada by viewModel.salasSelecionada.collectAsState()
-    val mensagemReserva by viewModel.mensagemReserva.collectAsState()
+    var mensagemReserva by remember { mutableStateOf<String?>(null) }
+    val showConfirmationDialog by viewModel.showConfirmationDialog.collectAsState()
     val context = LocalContext.current
 
     LaunchedEffect(mensagemReserva) {
@@ -47,6 +51,13 @@ fun SalasScreen(viewModel: ReservaChaveViewModel = viewModel()) {
             viewModel.limparMensagemReserva()
         }
     }
+
+    ConfirmationDialog(
+        showDialog = showConfirmationDialog,
+        sala = salaSelecionada,
+        onConfirm = { viewModel.confirmarReserva() },
+        onDismiss = { viewModel.cancelarReserva() }
+    )
 
     Scaffold(
         topBar = {
@@ -79,12 +90,9 @@ fun SalasScreen(viewModel: ReservaChaveViewModel = viewModel()) {
                         sala = sala,
                         isSelected = sala == salaSelecionada,
                         onSalaClick = { viewModel.selecionarSala(sala) }
-
                     )
+                 }
             }
-
-
-        }
         Spacer(modifier = Modifier.height(16.dp))
 
         if (salaSelecionada != null) {
@@ -93,9 +101,9 @@ fun SalasScreen(viewModel: ReservaChaveViewModel = viewModel()) {
                 style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { viewModel.reservarSalaSelecionada() },
+            Button(onClick = { viewModel.solicitarConfirmacao() },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = salaSelecionada != null) {
+                enabled = true) {
                 Text("Reservar ${salaSelecionada?.numero}")
             }
         }else {
