@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -64,8 +65,8 @@ fun SalasScreen(viewModel: ReservaChaveViewModel = viewModel()) {
             TopAppBar(
                 title = { Text("Reservar Salas") },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    titleContentColor = MaterialTheme.colorScheme.onSecondary
                 )
             )
         }
@@ -103,6 +104,10 @@ fun SalasScreen(viewModel: ReservaChaveViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = { viewModel.solicitarConfirmacao() },
                 modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
+                ),
                 enabled = true) {
                 Text("Reservar ${salaSelecionada?.numero}")
             }
@@ -123,7 +128,7 @@ fun SalaItem(sala: Sala, isSelected: Boolean, onSalaClick: (Sala) -> Unit) {
             .clickable { onSalaClick(sala) },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer
+            containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer
             else MaterialTheme.colorScheme.surfaceVariant
         )
     ) {
@@ -139,7 +144,7 @@ fun SalaItem(sala: Sala, isSelected: Boolean, onSalaClick: (Sala) -> Unit) {
             }
             if (isSelected) {
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("✔️", color = MaterialTheme.colorScheme.primary)
+                Text("✔️", color = MaterialTheme.colorScheme.secondary)
             }
         }
     }
