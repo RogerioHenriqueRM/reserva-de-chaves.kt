@@ -40,13 +40,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @OptIn(ExperimentalMaterial3Api::class) // Isso permite o uso de APIs experimentais do Material 3.
 @Composable
 fun SalasScreen(viewModel: ReservaChaveViewModel = viewModel()) {
-    val salasDisponiveis by viewModel.salasDisponiveis.collectAsState()
-    val salaSelecionada by viewModel.salasSelecionada.collectAsState()
+    val salasDisponiveis by viewModel.salasDisponiveis.collectAsState()// Coleta a lista de salas disponíveis do ViewModel como um State. Recompõe quando esta lista muda.
+    val salaSelecionada by viewModel.salasSelecionada.collectAsState()// mesma coisa que o de cima mas para a sala selecionada
+    // Cria um estado mutável para armazenar uma mensagem de reserva (ex: sucesso ou erro). Inicializado como nulo.
+    // Esta variável `mensagemReserva` local parece ser para um propósito específico dentro deste Composable,
+    // diferente da `mensagemReserva` no ViewModel que é usada para o Toast no LaunchedEffect.
     var mensagemReserva by remember { mutableStateOf<String?>(null) }
+    // Coleta o estado para mostrar o diálogo de confirmação do ViewModel. Recompõe quando este muda.
     val showConfirmationDialog by viewModel.showConfirmationDialog.collectAsState()
     val context = LocalContext.current
 
 
+    // Um efeito colateral que executa quando `viewModel.mensagemReserva` (do ViewModel) muda.
+    // É usado aqui para mostrar uma mensagem Toast.
+    // `LaunchedEffect` com `viewModel.mensagemReserva.collectAsState().value` como chave significa que o bloco será reexecutado
+    // sempre que o valor do StateFlow `mensagemReserva` no ViewModel mudar.
     LaunchedEffect(mensagemReserva) {
         if (mensagemReserva != null) {
             Toast.makeText(context, mensagemReserva, Toast.LENGTH_SHORT).show()

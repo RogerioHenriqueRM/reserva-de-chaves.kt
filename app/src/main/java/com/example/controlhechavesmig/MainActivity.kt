@@ -16,20 +16,18 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ControlheChavesMIGTheme {
+                // Surface é um contêiner que fornece uma cor de fundo do tema.
                 Surface(
 
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SalasScreen()
-                }
+                    SalasScreen() // Chama a função Composable SalasScreen
                 }
             }
         }
     }
-
-
-
+}
 
 
 /*@Preview(showBackground = true)
