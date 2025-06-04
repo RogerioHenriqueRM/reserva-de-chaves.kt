@@ -12,26 +12,25 @@ fun ConfirmationDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
-    if (showDialog && sala != null){
+    if (showDialog && sala != null) {
         AlertDialog(
             onDismissRequest = onDismiss,
-            title = {Text("Confirmar reserva")},
-            text = {Text("Tem certeza que deseja reservar a sala ${sala.numero} - ${sala.descricao}?")},
+            title = { Text("Confirmar reserva") },
+            text = { Text("Tem certeza que deseja reservar a sala ${sala.numero} - ${sala.descricao}?") },
             confirmButton = {
                 TextButton(onClick = {
                     onConfirm()
                     onDismiss()
-                }){
+                }) {
                     Text("Confirmar")
                 }
             },
             dismissButton = {
-                TextButton(onClick = onDismiss){
+                TextButton(onClick = onDismiss) {
                     Text("Cancelar")
                 }
 
 
-
-    })
-}
+            })
+    }
 }

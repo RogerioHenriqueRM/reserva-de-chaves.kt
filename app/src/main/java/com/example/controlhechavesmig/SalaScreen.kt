@@ -46,6 +46,7 @@ fun SalasScreen(viewModel: ReservaChaveViewModel = viewModel()) {
     val showConfirmationDialog by viewModel.showConfirmationDialog.collectAsState()
     val context = LocalContext.current
 
+
     LaunchedEffect(mensagemReserva) {
         if (mensagemReserva != null) {
             Toast.makeText(context, mensagemReserva, Toast.LENGTH_SHORT).show()

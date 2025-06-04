@@ -17,6 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ControlheChavesMIGTheme {
                 Surface(
+
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {

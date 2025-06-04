@@ -18,7 +18,6 @@ data class Sala(
 )
 
 
-
 class ReservaChaveViewModel : ViewModel() {
     //lista fixa de salas
 
@@ -51,16 +50,16 @@ class ReservaChaveViewModel : ViewModel() {
     }
 
     fun solicitarConfirmacao() {
-        if (_salasSelecionada.value != null){
+        if (_salasSelecionada.value != null) {
             _showConfirmationDialog.value = true
         }
 
-        }
+    }
 
 
     fun confirmarReserva() {
         _salasSelecionada.value?.let { sala ->
-            _mensagemReserva.value ="Sala '${sala.numero}' reservada com sucesso!"
+            _mensagemReserva.value = "Sala '${sala.numero}' reservada com sucesso!"
             _salasSelecionada.value = null
         }
         _showConfirmationDialog.value = false
