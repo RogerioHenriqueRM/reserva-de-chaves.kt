@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.controlhechavesmig.ui.telas.LoginScreen
+import com.example.controlhechavesmig.ui.telas.SalasScreen
 import com.example.controlhechavesmig.ui.theme.ControlheChavesMIGTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,6 +25,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     SalasScreen() // Chama a função Composable SalasScreen
+                    LoginScreen {  }
                 }
             }
         }

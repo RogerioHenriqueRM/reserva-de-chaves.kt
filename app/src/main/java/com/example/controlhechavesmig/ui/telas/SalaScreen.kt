@@ -1,4 +1,4 @@
-package com.example.controlhechavesmig
+package com.example.controlhechavesmig.ui.telas
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -36,6 +36,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.controlhechavesmig.ConfirmationDialog
+import com.example.controlhechavesmig.ReservaChaveViewModel
+import com.example.controlhechavesmig.Sala
 
 @OptIn(ExperimentalMaterial3Api::class) // Isso permite o uso de APIs experimentais do Material 3 do google
 @Composable
