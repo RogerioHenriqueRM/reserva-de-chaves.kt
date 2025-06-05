@@ -37,7 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-@OptIn(ExperimentalMaterial3Api::class) // Isso permite o uso de APIs experimentais do Material 3.
+@OptIn(ExperimentalMaterial3Api::class) // Isso permite o uso de APIs experimentais do Material 3 do google
 @Composable
 fun SalasScreen(viewModel: ReservaChaveViewModel = viewModel()) {
     val salasDisponiveis by viewModel.salasDisponiveis.collectAsState()// Coleta a lista de salas disponíveis do ViewModel como um State. Recompõe quando esta lista muda.
@@ -61,77 +61,113 @@ fun SalasScreen(viewModel: ReservaChaveViewModel = viewModel()) {
             viewModel.limparMensagemReserva()
         }
     }
-
+    // Exibe o Composable ConfirmationDialog com base no estado showConfirmationDialog
     ConfirmationDialog(
+        // Controla a visibilidade do dialog
         showDialog = showConfirmationDialog,
+        // Passa a sala selecionada para o dialog.
         sala = salaSelecionada,
+        // Função lambda  chamada quando o usuário confirma a reserva
         onConfirm = { viewModel.confirmarReserva() },
+        // Função lambda para chamada quando o usuário sai do dialog
         onDismiss = { viewModel.cancelarReserva() }
     )
-
+    //estrutura de layout
     Scaffold(
+        // Define a barra de aplicativo superior.
         topBar = {
             TopAppBar(
+                // Define o título da tela
                 title = { Text("Reservar Salas") },
+                // Personaliza as cores
                 colors = TopAppBarDefaults.topAppBarColors(
+                    // Define a cor de fundo da barra
                     containerColor = MaterialTheme.colorScheme.secondary,
+                    // Define a cor do texto do título
                     titleContentColor = MaterialTheme.colorScheme.onSecondary
                 )
             )
         }
-    ){paddingValues ->
+        // O conteúdo do Scaffold é fornecido nesta lambda, com paddingValues para evitar sobreposição com a barra de app.
+    ) { paddingValues ->
+        // Column organiza verticalmente os elementos filhos
         Column(
+            //modificação de estilização
             modifier = Modifier
+                // Faz a Column ocupar o espaço disponível
                 .fillMaxSize()
+                // Aplica o preenchimento fornecido pelo Scaffold para evitar barras do sistema/barra de app
                 .padding(paddingValues)
                 .padding(16.dp),
+            //centraliza dentro da Column
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            //texto de título
             Text(
-                "Selecione uma sala:", style = MaterialTheme.typography.headlineSmall)
+                // Conteúdo e estilo do texto
+                "Selecione uma sala:", style = MaterialTheme.typography.headlineSmall
+            )
+            // Adiciona um espaço vertical de 16dp
             Spacer(modifier = Modifier.height(16.dp))
 
+            // LazyColumn é usado para exibir uma lista rolável
             LazyColumn(
-                modifier = Modifier.weight(1f),//para ocupar o espaço disponivel
+                modifier = Modifier.weight(1f),//para a LazyColumn ocupar o espaço disponivel
+                //espaçamento entre os itens
                 verticalArrangement = Arrangement.spacedBy(8.dp)
-            ){
-                items(salasDisponiveis, key = {it.id}){sala ->
+            ) {
+                // `items` é uma função construtora para LazyColumn para definir o que tem dentro
+                // Ele faz interação `salasDisponiveis`. A `key` ajuda o Compose a otimizar as recomposições.
+                items(salasDisponiveis, key = { it.id }) { sala ->
                     SalaItem(
-                        sala = sala,
-                        isSelected = sala == salaSelecionada,
-                        onSalaClick = { viewModel.selecionarSala(sala) }
+                        sala = sala, // Passa o objeto da sala atual.
+                        isSelected = sala == salaSelecionada, // Determina se esta sala é a atualmente selecionada.
+                        onSalaClick = { viewModel.selecionarSala(sala) } // Lambda para executar quando o item da sala é clicado, chamando a função do ViewModel.
                     )
-                 }
+                }
             }
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        if (salaSelecionada != null) {
-            Text(
-                "Sala selecionada: ${salaSelecionada?.numero}",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { viewModel.solicitarConfirmacao() },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary,
-                    contentColor = MaterialTheme.colorScheme.onTertiary
-                ),
-                enabled = true) {
-                Text("Reservar ${salaSelecionada?.numero}")
+            // UI Condicional: Só é mostrada se uma sala estiver selecionada.
+            if (salaSelecionada != null) {
+                Text(
+                    "Sala selecionada: ${salaSelecionada?.numero}",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    onClick = {  if (viewModel.salasSelecionada.value != null) {
+                        viewModel.solicitarConfirmacao()
+                    }else {
+                        Toast.makeText(context, "Por favor, selecione uma sala primeiro.", Toast.LENGTH_SHORT).show()
+                    }
+                              },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary
+                    ),
+                    enabled = true
+                ) {
+                    Text("Reservar ${salaSelecionada?.numero}")
+                }
+            } else {
+                Text("Nenhuma sala selecionada")
+
             }
-        }else {
-            Text("Nenhuma sala selecionada")
 
         }
-
     }
-}}
+}
 
 
 @Composable
-fun SalaItem(sala: Sala, isSelected: Boolean, onSalaClick: (Sala) -> Unit) {
-    Card(
+fun SalaItem(
+    sala: Sala,
+    isSelected: Boolean,
+    onSalaClick: (Sala) -> Unit
+) { // Define o Composable SalaItem, que exibe um único item de sala
+    Card( //card usado para agrupar as informaões de cada sala em um container
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onSalaClick(sala) },
@@ -147,10 +183,16 @@ fun SalaItem(sala: Sala, isSelected: Boolean, onSalaClick: (Sala) -> Unit) {
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(sala.numero, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+            Column(modifier = Modifier.weight(1f)) { //O weight(1f) faz esta Column ocupar o espaço horizontal disponível.
+                // Exibe o número da sala em negrito.
+                Text(
+                    sala.numero,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium
+                )
                 Text(sala.descricao, style = MaterialTheme.typography.bodyMedium)
             }
+            // Se a sala estiver selecionada, mostra um indicador (um check ✔️)
             if (isSelected) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("✔️", color = MaterialTheme.colorScheme.secondary)
@@ -221,6 +263,26 @@ fun SalaItem(sala: Sala, isSelected: Boolean, onSalaClick: (Sala) -> Unit) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//viewModel.solicitarConfirmacao()
 
 
 

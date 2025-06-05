@@ -19,8 +19,8 @@ class MainActivity : ComponentActivity() {
                 // Surface é um contêiner que fornece uma cor de fundo do tema.
                 Surface(
 
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), // Faz o Surface ocupar toda a tela.
+                    color = MaterialTheme.colorScheme.background // Define a cor de fundo do Surface para a cor de fundo definida no MaterialTheme.
                 ) {
                     SalasScreen() // Chama a função Composable SalasScreen
                 }
@@ -28,6 +28,94 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*@Preview(showBackground = true)

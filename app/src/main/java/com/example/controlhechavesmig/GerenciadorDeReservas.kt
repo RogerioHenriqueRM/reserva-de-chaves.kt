@@ -17,7 +17,7 @@ data class Sala(
 
 )
 
-
+// Declara a classe ReservaChaveViewModel, que herda de ViewModel.
 class ReservaChaveViewModel : ViewModel() {
     //lista fixa de salas
 
@@ -42,7 +42,7 @@ class ReservaChaveViewModel : ViewModel() {
     val showConfirmationDialog: StateFlow<Boolean> = _showConfirmationDialog.asStateFlow()
 
     fun selecionarSala(sala: Sala) {
-        // Se a sala clicada já é a selecionada, desmarca. Senão, seleciona a nova sala.
+        // Se a sala clicada já é a selecionada, senão, seleciona a nova sala.
         _salasSelecionada.update { salaAtual ->
             if (salaAtual == sala) null else sala
         }
@@ -58,11 +58,31 @@ class ReservaChaveViewModel : ViewModel() {
 
 
     fun confirmarReserva() {
-        _salasSelecionada.value?.let { sala ->
+        // Lógica para quando o usuário confirma no diálogo
+        val sala = salasSelecionada.value
+        if (sala != null) {
+            // --- COLOCAR AQUI A LÓGICA REAL DA RESERVA ---
+            // Exemplo:
+            // val sucesso = fazerReservaNoBancoDeDados(sala, usuarioAtual, etc...)
+            val sucesso = true // Simular sucesso para este exemplo
+
+            if (sucesso) {
+                _mensagemReserva.value = "Sala '${sala.numero}' reservada com sucesso!" // DEFINE A MENSAGEM
+            } else {
+                _mensagemReserva.value = "Falha ao reservar a sala '${sala.numero}'."
+            }
+        } else {
+            _mensagemReserva.value = "Erro: Nenhuma sala selecionada para confirmar."
+        }
+        _showConfirmationDialog.value = false
+
+
+
+        /*_salasSelecionada.value?.let { sala ->
             _mensagemReserva.value = "Sala '${sala.numero}' reservada com sucesso!"
             _salasSelecionada.value = null
         }
-        _showConfirmationDialog.value = false
+        _showConfirmationDialog.value = false*/
 
     }
 
